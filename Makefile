@@ -1,4 +1,4 @@
-TARGET = imu
+TARGET = control
 
 SRC_DIR = source
 INC_DIR = include
