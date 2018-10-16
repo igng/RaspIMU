@@ -4,8 +4,8 @@
 #include <string.h>
 #include <sys/ioctl.h>
 
+#include "imu.h"
 #include "smbus.h"
-#include "tv.h"
 #include "debug.h"
 
 const char *i2c_bus = "/dev/i2c-1";
