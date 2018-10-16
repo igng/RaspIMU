@@ -9,6 +9,7 @@
 #include "imu.h"
 #include "debug.h"
 #include "linalg.h"
+#include "control.h"
 
 int main(int argc, char *argv[])
 {

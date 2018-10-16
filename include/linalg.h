@@ -9,15 +9,15 @@ typedef struct
     float det;    /* matrix's determinant */
 } Matrix;
 
-Matrix *mat_alloc(int, int);
-Matrix *mat_fill(float *, int, int);
-Matrix *mat_sum(Matrix *, Matrix *);
-Matrix *mat_prod(Matrix *, Matrix *);
-Matrix *mat_tran(Matrix *);
-Matrix *mat_inv(Matrix *);
-Matrix *mat_min(Matrix *, int, int);
-float mat_det(Matrix *);
+void mat_alloc(Matrix **, int, int);
+void mat_fill(Matrix **, float *, int, int);
+void mat_sum(Matrix *, Matrix *, Matrix **);
+void mat_prod(Matrix *, Matrix *, Matrix **);
+void mat_tran(Matrix *, Matrix **);
+void mat_inv(Matrix *, Matrix **);
+void mat_min(Matrix *, int, int, Matrix **);
+float mat_det(Matrix **);
 void mats_init(void);
-void mat_print(Matrix *);
+void mat_print(Matrix *, char *);
 
 #endif

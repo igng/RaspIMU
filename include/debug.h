@@ -29,7 +29,7 @@ typedef int bool;
 #if defined(DEBUG)
 
     #define MISC(format, ...) do {\
-            printf(YELLOW);\
+            printf(CYAN);\
             printf(format, ##__VA_ARGS__);\
             printf(BLANK);\
             printf("\n");\
