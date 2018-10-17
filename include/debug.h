@@ -48,5 +48,6 @@ typedef int bool;
 
 void error_handler(const char *);
 void usage(char **);
+long get_time(void);
 
 #endif
