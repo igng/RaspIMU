@@ -8,6 +8,9 @@ typedef int bool;
 /* lazy defines */
 #define TRUE 1
 #define FALSE 0
+#define NS 1
+#define US 1000
+#define MS 1000000
 
 /* colors for debug */
 #define BLANK      "\e[21;0m"
@@ -29,7 +32,7 @@ typedef int bool;
 #if defined(DEBUG)
 
     #define MISC(format, ...) do {\
-            printf(YELLOW);\
+            printf(CYAN);\
             printf(format, ##__VA_ARGS__);\
             printf(BLANK);\
             printf("\n");\
@@ -48,5 +51,7 @@ typedef int bool;
 
 void error_handler(const char *);
 void usage(char **);
+void start_time(void);
+void end_time(void);
 
 #endif
