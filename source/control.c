@@ -1,4 +1,3 @@
-/*
 #include <stdlib.h>
 #include <math.h>
 #include "debug.h"
@@ -19,8 +18,9 @@ float R_init[9] = {1, 0, 0, 0, 1, 0, 0, 0, 1};  // estimation error covariance
 float Q_init[9] = {1, 0, 0, 0, 1, 0, 0, 0, 1};  // system covariance (should be 2x2)
 float W_init[9] = {1, 0, 0, 0, 1, 0, 0, 0, 1};  // df/dw (should be 3x2)
 float L_init[9] = {1, 0, 0, 0, 1, 0, 0, 0, 1};  // dh/dw
-float Y_init[3] = {0, 0, 0};                    // measurement error
-Matrix *P, *F, *H, *R, *Q, *W, *L, *K, *X, *Y;
+Matrix *P, *P_m, *F, *H, *R, *Q, *W, *L, *K; // main matrices
+Matrix *P11, *P12, *P21, *P22, *K1, *K2;
+Matrix *F_t, *W_t, *X, *Y; // support matrices
 
 void unicycle(float *x, float *u)
 {
@@ -39,39 +39,83 @@ void ekf(void)
 {
     int i;
 
-    // Predict
+    /* Predict */
     unicycle(x_hat, u);
     F_fun();
-    Matrix *P1 = mat_prod(mat_prod(F, P), mat_tran(F));
-    Matrix *P2 = mat_prod(mat_prod(W, Q), mat_tran(W));
-    P = mat_sum(P1, P2);
+    // P1
+    mat_prod(F, P, &P11);
+    mat_tran(F, &F_t);
+    mat_prod(P11, F_t, &P12);
+    // P2
+    mat_prod(W, Q, &P21);
+    mat_tran(W, &W_t);
+    mat_prod(P21, W_t, &P22);
+    // P
+    mat_add(P11, P22, &P_m);
 
-    // Update
-    Matrix *K1 = mat_prod(P, mat_tran(H));
-    Matrix *K2 = mat_prod(mat_prod(H, P), mat_tran(H));
-    Matrix *K3 = mat_prod(mat_prod(L, R), mat_tran(L));
-    K = mat_prod(K1, mat_sum(K2, K3));
+    /* Update */
+    //Matrix *K1 = mat_prod(P, mat_tran(H));
+    //Matrix *K2 = mat_prod(mat_prod(H, P), mat_tran(H));
+    //Matrix *K3 = mat_prod(mat_prod(L, R), mat_tran(L));
+    // Asadding that H and L are the identity matrix and won't change
+    mat_add(P_m, R, &K1);
+    mat_inv(K1, &K2);
+    mat_prod(P_m, K2, &K);
     
     for (i = 0; i < 3; i++)
         Y->elem[i][0] = z[i] - x[i];
 
-    X = mat_prod(K, Y);
+    mat_prod(K, Y, &X);
+
+    for (i = 0; i < 3; i++)
+        x[i] = X->elem[i][0];
+
+    mat_sub(H, K, &P11);
 }
 
 void control_init(void)
 {
-    P = mat_fill(P_init, 3, 3);
-    F = mat_fill(F_init, 3, 3);
-    H = mat_fill(H_init, 3, 3);
-    R = mat_fill(R_init, 3, 3);
-    Q = mat_fill(Q_init, 3, 3);
-    W = mat_fill(W_init, 3, 3);
-    L = mat_fill(L_init, 3, 3);
-    Y = mat_fill(Y_init, 3, 1);
+    mat_fill(&P, P_init, 3, 3);
+    mat_fill(&H, H_init, 3, 3);
+    mat_fill(&R, R_init, 3, 3);
+    mat_fill(&Q, Q_init, 3, 3);
+    mat_fill(&W, W_init, 3, 3);
+    mat_fill(&L, L_init, 3, 3);
 
-    int i;
-
-    for (i = 0; ; i++)
-        ekf();
+    mat_alloc(&P_m, 3, 3);
+    mat_alloc(&F, 3, 3);
+    mat_alloc(&P11, 3, 3);
+    mat_alloc(&P12, 3, 3);
+    mat_alloc(&P21, 3, 3);
+    mat_alloc(&P22, 3, 3);
+    mat_alloc(&F_t, 3, 3);
+    mat_alloc(&W_t, 3, 3);
+    mat_alloc(&K1, 3, 3);
+    mat_alloc(&K2, 3, 3);
+    mat_alloc(&K, 3, 3);
+    mat_alloc(&Y, 3, 1);
+    mat_alloc(&X, 3, 1);
 }
-*/
+
+void control_destroy(void)
+{
+    mat_delete(P);
+    mat_delete(P_m);
+    mat_delete(F);
+    mat_delete(H);
+    mat_delete(R);
+    mat_delete(Q);
+    mat_delete(W);
+    mat_delete(L);
+    mat_delete(P11);
+    mat_delete(P12);
+    mat_delete(P21);
+    mat_delete(P22);
+    mat_delete(F_t);
+    mat_delete(W_t);
+    mat_delete(K1);
+    mat_delete(K2);
+    mat_delete(K);
+    mat_delete(X);
+    mat_delete(Y);
+}

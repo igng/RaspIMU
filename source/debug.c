@@ -4,6 +4,7 @@
 #include "debug.h"
 
 struct timespec time_struct;
+long elapsed;
 
 void error_handler(const char *msg)
 {
@@ -20,7 +21,18 @@ void usage(char **argv)
 long get_time(void)
 {
     if (clock_gettime(CLOCK_REALTIME, &time_struct) != 0)
-        error_handler("get_time | clock_gettime");
+        error_handler("start_time | clock_gettime");
 
     return time_struct.tv_nsec;
+}
+
+void start_time(void)
+{
+    elapsed = get_time();
+}
+
+void end_time(void)
+{
+    elapsed = get_time() - elapsed;
+    INFO("Elapsed: %li us", elapsed/US);
 }

@@ -13,6 +13,20 @@ void test(Matrix *P)
 {
     A = P;
     B = P;
+
+    mat_print(P, "P");
+    
+    mat_add(A, B, &C);
+    mat_print(C, "Sum");
+
+    mat_prod(A, B, &C);
+    mat_print(C, "Prod");
+
+    mat_tran(P, &C);
+    mat_print(C, "Transpose");
+
+    mat_inv(P, &C);
+    mat_print(C, "Inverse");
 }
 
 void mat_alloc(Matrix **M, int rows, int cols)
@@ -57,13 +71,22 @@ void mat_fill(Matrix **M, float *elements, int rows, int cols)
         }
 }
 
-void mat_sum(Matrix *A, Matrix *B, Matrix **C)
+void mat_add(Matrix *A, Matrix *B, Matrix **C)
 {
     int r, c;
 
     for (r = 0; r < A->rows; r++)
         for (c = 0; c < A->cols; c++)
             (*C)->elem[r][c] = A->elem[r][c] + B->elem[r][c];
+}
+
+void mat_sub(Matrix *A, Matrix *B, Matrix **C)
+{
+    int r, c;
+
+    for (r = 0; r < A->rows; r++)
+        for (c = 0; c < A->cols; c++)
+            (*C)->elem[r][c] = A->elem[r][c] - B->elem[r][c];
 }
 
 void mat_prod(Matrix *A, Matrix *B, Matrix **C)

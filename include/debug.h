@@ -8,6 +8,9 @@ typedef int bool;
 /* lazy defines */
 #define TRUE 1
 #define FALSE 0
+#define NS 1
+#define US 1000
+#define MS 1000000
 
 /* colors for debug */
 #define BLANK      "\e[21;0m"
@@ -48,6 +51,7 @@ typedef int bool;
 
 void error_handler(const char *);
 void usage(char **);
-long get_time(void);
+void start_time(void);
+void end_time(void);
 
 #endif
