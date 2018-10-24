@@ -24,6 +24,9 @@ int open_file(const char *filename)
 	return fd;
 }
 
+int M_setup(void)
+
+
 int MPU_setup(void)
 {
     int fd;

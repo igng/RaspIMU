@@ -16,14 +16,17 @@ int main(int argc, char *argv[])
     if (argc != 1)
         usage(argv);
     
-//    int fd = MPU_setup();
-//    read_accels(fd);
+    int m_fd = M_setup();
+    int ag_fd = AG_setup();
 
-    control_init();
+    //int fd = MPU_setup();
+    //read_accels(fd);
+
     start_time();
+    control_init();
     ekf();
-    end_time();
     control_destroy();
+    end_time();
 
     return EXIT_SUCCESS;
 }

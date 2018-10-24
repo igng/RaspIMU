@@ -20,6 +20,8 @@
 
 int open_file(const char *);
 int MPU_setup(void);
+int M_setup(void);
+int AG_setup(void);
 void read_byte(uint8_t, int8_t *, int);
 void read_word(uint8_t, int16_t *, int);
 void read_accels(int);
