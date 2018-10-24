@@ -88,3 +88,16 @@ void read_accels(int fd)
 
     }
 }
+
+void read_whoami(int fd)
+{
+    int8_t whoami;
+    uint8_t reg;
+
+    if (fd == 3)
+        reg = WHO_AM_I_M;
+    else
+        reg = WHO_AM_I;
+
+    read_byte(reg, &whoami, fd);
+}

@@ -11,11 +11,11 @@ CC = gcc
 CFLAGS += -Wall -Werror -Wextra -O2 -I$(INC_DIR)
 LDFLAGS += -Llib
 LDLIBS += -lm
-#DEFINES += -DDEBUG
+DEFINES += -DDEBUG
 
 .PHONY: all clean
 
-all: clean $(TARGET)
+all: $(TARGET)
 
 $(TARGET): $(OBJ)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
