@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-/* read the datasheet for more informations */
+/* MPU6050 registers */
 #define PWR_MGT         0x6B
 #define ACCEL_XOUT_H    0x3B
 #define ACCEL_XOUT_L    0x3C
@@ -17,6 +17,12 @@
 #define GIRO_YOUT_L     0x46
 #define GIRO_ZOUT_H     0x47
 #define GIRO_ZOUT_L     0x48
+
+/* xinabox SI01 registers */
+#define M_I2C_ADDR      0x1C
+#define AG_I2C_ADDR     0x6A
+#define WHO_AM_I        0x0F    // ask to the ag_chip
+#define WHO_AM_I_M      0x0F    // ask to the m_chip
 
 int open_file(const char *);
 int MPU_setup(void);

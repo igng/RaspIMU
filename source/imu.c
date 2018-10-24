@@ -24,8 +24,15 @@ int open_file(const char *filename)
 	return fd;
 }
 
-int M_setup(void)
+int i2c_setup(int device_address)
+{
+    int fd = open_file(i2c_bus);
 
+    if (ioctl(fd, I2C_SLAVE, device_address) == -1)
+        error_handler("i2c_setup | ioctl");
+
+    return fd;
+}
 
 int MPU_setup(void)
 {
