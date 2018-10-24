@@ -18,18 +18,56 @@
 #define GIRO_ZOUT_H     0x47
 #define GIRO_ZOUT_L     0x48
 
-/* xinabox SI01 registers */
-#define M_I2C_ADDR      0x1C
+/* xinabox SI01 registers [accelerometer + gyroscope] */
 #define AG_I2C_ADDR     0x6A
-#define WHO_AM_I_AG     0x0F    // ask to the ag_chip
-#define WHO_AM_I_M      0x0F    // ask to the m_chip
+#define WHO_AM_I_AG     0x0F
+#define STATUS_REG_AG   0x17
+#define ACC_READY       0x01
+#define GYRO_READY      0x02
+// gyrosocope
+#define CTRL_REG1_G     0x10
+#define CTRL_REG4       0x1E
+#define OUT_X_L_G       0x18
+#define OUT_X_H_G       0x19
+#define OUT_Y_L_G       0x1A
+#define OUT_Y_H_G       0x1B
+#define OUT_Z_L_G       0x1C
+#define OUT_Z_H_G       0x1D
+// acceleromoeter
+#define CTRL_REG5_XL    0x1F
+#define CTRL_REG6_XL    0x20
+#define CTRL_REG7_XL    0x21
+#define OUT_X_L_A       0x28
+#define OUT_X_H_A       0x29
+#define OUT_Y_L_A       0x2A
+#define OUT_Y_H_A       0x2B
+#define OUT_Z_L_A       0x2C
+#define OUT_Z_H_A       0x2D
+
+/* xinabox SI01 registers [magnetometer] */
+#define M_I2C_ADDR      0x1C
+#define WHO_AM_I_M      0x0F
+#define MAG_READY       0x08
+#define OUT_X_L_M       0x28
+#define OUT_X_H_M       0x29
+#define OUT_Y_L_M       0x2A
+#define OUT_Y_H_M       0x2B
+#define OUT_Z_L_M       0x2C
+#define OUT_Z_H_M       0x2D
 
 int open_file(const char *);
 int MPU_setup(void);
 int i2c_setup(int);
 void read_byte(uint8_t, int8_t *, int);
 void read_word(uint8_t, int16_t *, int);
+void write_byte(uint8_t, int8_t, int);
+void write_word(uint8_t, int16_t, int);
+void accel_init(int);
+void gyro_init(int);
+void magnet_init(int);
 void read_accels(int);
+void read_gyro(int);
+void read_magnet(int);
 void check_whoami(int, int);
 
 #endif
