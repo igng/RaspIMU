@@ -89,15 +89,16 @@ void read_accels(int fd)
     }
 }
 
-void read_whoami(int fd)
+void check_whoami(int ag_fd, int m_fd)
 {
-    int8_t whoami;
-    uint8_t reg;
+    int8_t ag_w, m_w;
+    int16_t who_am_i;
 
-    if (fd == 3)
-        reg = WHO_AM_I_M;
-    else
-        reg = WHO_AM_I;
+    read_byte(WHO_AM_I_AG, &ag_w, ag_fd);
+    read_byte(WHO_AM_I_M, &m_w, m_fd);
 
-    read_byte(reg, &whoami, fd);
+    who_am_i = (ag_w << 8) | m_w;
+
+    if (who_am_i != 0x683D)
+        ERROR("who_am_i [%4x] != 0x683D", who_am_i);
 }

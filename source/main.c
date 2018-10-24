@@ -16,14 +16,10 @@ int main(int argc, char *argv[])
     if (argc != 1)
         usage(argv);
     
-    int m_fd = i2c_setup(M_I2C_ADDR);
     int ag_fd = i2c_setup(AG_I2C_ADDR);
+    int m_fd = i2c_setup(M_I2C_ADDR);
 
-    INFO("Opened m_fd at %d", m_fd);
-    INFO("Opened ag_fd at %d", ag_fd);
-
-    read_whoami(m_fd);
-    read_whoami(ag_fd);
+    check_whoami(ag_fd, m_fd);
 
 //    int fd = MPU_setup();
 //    read_accels(fd);

@@ -21,7 +21,7 @@
 /* xinabox SI01 registers */
 #define M_I2C_ADDR      0x1C
 #define AG_I2C_ADDR     0x6A
-#define WHO_AM_I        0x0F    // ask to the ag_chip
+#define WHO_AM_I_AG     0x0F    // ask to the ag_chip
 #define WHO_AM_I_M      0x0F    // ask to the m_chip
 
 int open_file(const char *);
@@ -30,6 +30,6 @@ int i2c_setup(int);
 void read_byte(uint8_t, int8_t *, int);
 void read_word(uint8_t, int16_t *, int);
 void read_accels(int);
-void read_whoami(int);
+void check_whoami(int, int);
 
 #endif
