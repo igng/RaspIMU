@@ -33,6 +33,9 @@
 #define OUT_Y_H_G       0x1B
 #define OUT_Z_L_G       0x1C
 #define OUT_Z_H_G       0x1D
+#define GYRO_245DPS     8.75
+#define GYRO_500DPS     17.5
+#define GYRO_2000DPS    50
 // acceleromoeter
 #define CTRL_REG5_XL    0x1F
 #define CTRL_REG6_XL    0x20
@@ -43,6 +46,10 @@
 #define OUT_Y_H_A       0x2B
 #define OUT_Z_L_A       0x2C
 #define OUT_Z_H_A       0x2D
+#define ACCEL_2G        0.061
+#define ACCEL_4G        0.122
+#define ACCEL_8G        0.244
+#define ACCEL_16G       0.732       // ?? *2, *4, *8, *12
 
 /* xinabox SI01 registers [magnetometer] */
 #define M_I2C_ADDR      0x1C
@@ -54,6 +61,10 @@
 #define OUT_Y_H_M       0x2B
 #define OUT_Z_L_M       0x2C
 #define OUT_Z_H_M       0x2D
+#define MAG_4GAUSS      0.14
+#define MAG_8GAUSS      0.29
+#define MAG_12GAUSS     0.43
+#define MAG_16GAUSS     0.58
 
 int open_file(const char *);
 int MPU_setup(void);

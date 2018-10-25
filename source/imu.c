@@ -160,7 +160,8 @@ void gyro_init(int fd)
     write_byte(CTRL_REG1_G, data, fd);
     data = 0;
 
-    data |= 0x38;
+    data |= 0x38;       // 00111000; enable axis output
+    data |= 0x02;       // latched IRQ
     write_byte(CTRL_REG4, data, fd);
 }
 

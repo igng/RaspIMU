@@ -22,6 +22,7 @@ int main(int argc, char *argv[])
     check_whoami(ag_fd, m_fd);
     accel_init(ag_fd);
     gyro_init(ag_fd);
+//    magnet_init(m_fd);
 
     for (;;)
     {
