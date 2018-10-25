@@ -20,14 +20,15 @@ int main(int argc, char *argv[])
     int m_fd = i2c_setup(M_I2C_ADDR);
 
     check_whoami(ag_fd, m_fd);
-    accel_init(ag_fd);
     gyro_init(ag_fd);
+    accel_init(ag_fd);
 //    magnet_init(m_fd);
 
     for (;;)
     {
         read_accels(ag_fd);
         read_gyro(ag_fd);
+        INFO("\n");
 //        read_magnet(m_fd);
     }
 

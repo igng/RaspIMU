@@ -81,13 +81,13 @@ void write_to_file(int file_fd, char *buff)
 
 void read_accels(int fd)
 {
-    int8_t new_data;
+//    int8_t new_data;
     int16_t x_accel, y_accel, z_accel;
 
-    read_byte(STATUS_REG_AG, &new_data, fd);
+//    read_byte(STATUS_REG_AG, &new_data, fd);
 
-    if (!(new_data & ACC_READY))
-        return;
+//    if (!(new_data & ACC_READY))
+//        return;
 
     read_word(OUT_X_L_A, &x_accel, fd);
     read_word(OUT_Y_L_A, &y_accel, fd);
@@ -98,13 +98,13 @@ void read_accels(int fd)
 
 void read_gyro(int fd)
 {
-    int8_t new_data;
+//    int8_t new_data;
     int16_t x_gyro, y_gyro, z_gyro;
 
-    read_byte(STATUS_REG_AG, &new_data, fd);
+//    read_byte(STATUS_REG_AG, &new_data, fd);
 
-    if (!(new_data & GYRO_READY))
-        return;
+//    if (!(new_data & GYRO_READY))
+//        return;
 
     read_word(OUT_X_L_G, &x_gyro, fd);
     read_word(OUT_Y_L_G, &y_gyro, fd);
@@ -142,27 +142,32 @@ void check_whoami(int ag_fd, int m_fd)
 
 void accel_init(int fd)
 {
-    uint8_t data = 0;
+    uint8_t data = 0x00;
 
     data |= 0x38;       // 00111000; enables axis output
     write_byte(CTRL_REG5_XL, data, fd);
-    data = 0;
-
-    data |= 0xC0;       // 11000000; maximum sample rate
-    write_byte(CTRL_REG6_XL, data, fd);
 }
 
 void gyro_init(int fd)
 {
-    uint8_t data = 0;
+    uint8_t data = 0x00;
 
-    data |= 0xC0;
+    data |= 0xC0;       // 11000000; maximum sample rate
     write_byte(CTRL_REG1_G, data, fd);
-    data = 0;
 
+    data = 0x00;
+    write_byte(CTRL_REG2_G, data, fd);
+
+    data = 0x00;
+    write_byte(CTRL_REG3_G, data, fd);
+
+    data = 0x00;
     data |= 0x38;       // 00111000; enable axis output
-    data |= 0x02;       // latched IRQ
+    data |= 0x02;       // 00000010; latcedIRQ
     write_byte(CTRL_REG4, data, fd);
+
+    data = 0x00;
+    write_byte(ORIENT_CFG_G, data, fd);
 }
 
 void magnet_init(int fd)

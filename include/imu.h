@@ -18,14 +18,20 @@
 #define GIRO_ZOUT_H     0x47
 #define GIRO_ZOUT_L     0x48
 
-/* xinabox SI01 registers [accelerometer + gyroscope] */
+/* xinabos SI01 global registers [laziness] */
 #define AG_I2C_ADDR     0x6A
+#define M_I2C_ADDR      0x1C
 #define WHO_AM_I_AG     0x0F
+#define WHO_AM_I_M      0x0F
+/* xinabox SI01 registers [accelerometer + gyroscope] */
 #define STATUS_REG_AG   0x17
 #define ACC_READY       0x01
 #define GYRO_READY      0x02
 // gyrosocope
 #define CTRL_REG1_G     0x10
+#define CTRL_REG2_G     0x11
+#define CTRL_REG3_G     0x12
+#define ORIENT_CFG_G    0x13
 #define CTRL_REG4       0x1E
 #define OUT_X_L_G       0x18
 #define OUT_X_H_G       0x19
@@ -34,7 +40,7 @@
 #define OUT_Z_L_G       0x1C
 #define OUT_Z_H_G       0x1D
 #define GYRO_245DPS     8.75
-#define GYRO_500DPS     17.5
+#define GYRO_500DPS     17.5 
 #define GYRO_2000DPS    50
 // acceleromoeter
 #define CTRL_REG5_XL    0x1F
@@ -52,8 +58,6 @@
 #define ACCEL_16G       0.732       // ?? *2, *4, *8, *12
 
 /* xinabox SI01 registers [magnetometer] */
-#define M_I2C_ADDR      0x1C
-#define WHO_AM_I_M      0x0F
 #define MAG_READY       0x08
 #define OUT_X_L_M       0x28
 #define OUT_X_H_M       0x29
