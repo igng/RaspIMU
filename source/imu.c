@@ -10,6 +10,9 @@
 
 const char *i2c_bus = "/dev/i2c-1";
 int addr = 0x68;
+float gyro_sens = GYRO_245DPS;
+float acc_sens = ACCEL_2G;
+float mag_sens = MAG_4GAUSS;
 
 int open_file(const char *filename)
 {
@@ -93,6 +96,10 @@ void read_accels(int fd)
     read_word(OUT_Y_L_A, &y_accel, fd);
     read_word(OUT_Z_L_A, &z_accel, fd);
 
+    x_accel *= accel_sens;
+    y_accel *= accel_sens;
+    z_accel *= accel_sens;
+
     INFO("x_accel: %d | y_accel: %d | z_accel: %d", x_accel, y_accel, z_accel);
 }
 
@@ -110,6 +117,10 @@ void read_gyro(int fd)
     read_word(OUT_Y_L_G, &y_gyro, fd);
     read_word(OUT_Z_L_G, &z_gyro, fd);
 
+    x_gyro *= gyro_sens;
+    y_gyro *= gyro_sens;
+    z_gyro *= gyro_sens;
+
     INFO("x_gyro: %d | y_gyro: %d | z_gyro: %d", x_gyro, y_gyro, z_gyro);
 }
 
@@ -120,6 +131,10 @@ void read_magnet(int fd)
     read_word(OUT_X_L_M, &x_mag, fd);
     read_word(OUT_Y_L_M, &y_mag, fd);
     read_word(OUT_Z_L_M, &z_mag, fd);
+
+    x_mag *= mag_sens;
+    y_mag *= mag_sens;
+    z_mag *= mag_sens;
 
     INFO("x_mag: %d | y_mag: %d | z_mag: %d", x_mag, y_mag, z_mag);
 }
