@@ -22,14 +22,14 @@ int main(int argc, char *argv[])
     check_whoami(ag_fd, m_fd);
     gyro_init(ag_fd);
     accel_init(ag_fd);
-//    magnet_init(m_fd);
+    magnet_init(m_fd);
 
     for (;;)
     {
         read_accels(ag_fd);
         read_gyro(ag_fd);
+        read_magnet(m_fd);
         INFO(" ");
-//        read_magnet(m_fd);
     }
 
 //    start_time();

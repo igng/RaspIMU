@@ -81,11 +81,6 @@
 #define OUT_Z_L_M           0x2C
 #define OUT_Z_H_M           0x2D
 
-// Linear Acceleration: mg per LSB
-#define MAG_4GAUSS           0.00014
-#define MAG_8GAUSS           0.00029
-#define MAG_12GAUSS          0.00043
-#define MAG_16GAUSS          0.00058
 
 /* xinabox SI01 registers [magnetometer] */
 #define MAG_READY       0x08
@@ -95,10 +90,10 @@
 #define OUT_Y_H_M       0x2B
 #define OUT_Z_L_M       0x2C
 #define OUT_Z_H_M       0x2D
-#define MAG_4GAUSS      0.14
-#define MAG_8GAUSS      0.29
-#define MAG_12GAUSS     0.43
-#define MAG_16GAUSS     0.58
+#define MAG_4GAUSS      0.00014
+#define MAG_8GAUSS      0.00029
+#define MAG_12GAUSS     0.00043
+#define MAG_16GAUSS     0.00058
 
 /* setup */
 int MPU_setup(void);

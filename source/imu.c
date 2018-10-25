@@ -177,4 +177,17 @@ void magnet_init(int fd)
     data |= 0x60;       // 01100000; XY high-power mode 
     data |= 0x1C;       // 00011100; maximum sample rate
     write_byte(CTRL_REG1_M, data, fd);
+
+    data = 0x00;
+    write_byte(CTRL_REG2_M, data, fd);
+
+    data = 0x00;
+    write_byte(CTRL_REG3_M, data, fd);
+
+    data = 0x00;
+    data |= 0x0C;
+    write_byte(CTRL_REG4_M, data, fd);
+
+    data = 0x00;
+    write_byte(CTRL_REG5_M, data, fd);
 }
