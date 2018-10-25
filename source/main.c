@@ -28,12 +28,9 @@ int main(int argc, char *argv[])
     {
         read_accels(ag_fd);
         read_gyro(ag_fd);
-        INFO("\n");
+        INFO(" ");
 //        read_magnet(m_fd);
     }
-
-//    int fd = MPU_setup();
-//    read_accels(fd);
 
 //    start_time();
 //    control_init();

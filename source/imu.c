@@ -172,5 +172,9 @@ void gyro_init(int fd)
 
 void magnet_init(int fd)
 {
-    fd = fd;
+    uint8_t data = 0x00;
+
+    data |= 0x60;       // 01100000; XY high-power mode 
+    data |= 0x1C;       // 00011100; maximum sample rate
+    write_byte(CTRL_REG1_M, data, fd);
 }
