@@ -69,7 +69,7 @@
 #define CTRL_REG3_M         0x22
 #define CTRL_REG4_M         0x23
 #define CTRL_REG5_M         0x24
-#define STATUS_REG          0x27
+#define STATUS_REG_M        0x27
 #define INT_CFG_M           0x30
 #define INT_SRC_M           0x31
 #define INT_THS_L_M         0x32

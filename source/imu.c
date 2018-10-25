@@ -11,8 +11,11 @@
 const char *i2c_bus = "/dev/i2c-1";
 int addr = 0x68;
 float gyro_sens = GYRO_245DPS;
-float acc_sens = ACCEL_2G;
+float accel_sens = ACCEL_2G;
 float mag_sens = MAG_4GAUSS;
+float x_acc, y_acc, z_acc;
+float x_gyro, y_gyro, z_gyro;
+float x_mag, y_mag, z_mag;
 
 int open_file(const char *filename)
 {
@@ -84,59 +87,68 @@ void write_to_file(int file_fd, char *buff)
 
 void read_accels(int fd)
 {
-//    int8_t new_data;
-    int16_t x_accel, y_accel, z_accel;
+    int8_t new_data;
+    int16_t accel_data;
 
-//    read_byte(STATUS_REG_AG, &new_data, fd);
+    read_byte(STATUS_REG_AG, &new_data, fd);
 
-//    if (!(new_data & ACC_READY))
-//        return;
+    if (!(new_data & ACC_READY))
+        return;
 
-    read_word(OUT_X_L_A, &x_accel, fd);
-    read_word(OUT_Y_L_A, &y_accel, fd);
-    read_word(OUT_Z_L_A, &z_accel, fd);
+    read_word(OUT_X_L_A, &accel_data, fd);
+    x_acc = accel_data*accel_sens;
 
-    x_accel *= accel_sens;
-    y_accel *= accel_sens;
-    z_accel *= accel_sens;
+    read_word(OUT_Y_L_A, &accel_data, fd);
+    y_acc = accel_data*accel_sens;
 
-    INFO("x_accel: %d | y_accel: %d | z_accel: %d", x_accel, y_accel, z_accel);
+    read_word(OUT_Z_L_A, &accel_data, fd);
+    z_acc = accel_data*accel_sens;
+
+    INFO("x_acc: %.2f | y_acc: %.2f | z_acc: %.2f", x_acc, y_acc, z_acc);
 }
 
 void read_gyro(int fd)
 {
-//    int8_t new_data;
-    int16_t x_gyro, y_gyro, z_gyro;
+    int8_t new_data;
+    int16_t gyro_data;
 
-//    read_byte(STATUS_REG_AG, &new_data, fd);
+    read_byte(STATUS_REG_AG, &new_data, fd);
 
-//    if (!(new_data & GYRO_READY))
-//        return;
+    if (!(new_data & GYRO_READY))
+        return;
 
-    read_word(OUT_X_L_G, &x_gyro, fd);
-    read_word(OUT_Y_L_G, &y_gyro, fd);
-    read_word(OUT_Z_L_G, &z_gyro, fd);
+    read_word(OUT_X_L_G, &gyro_data, fd);
+    x_gyro = gyro_data*gyro_sens;
 
-    x_gyro *= gyro_sens;
-    y_gyro *= gyro_sens;
-    z_gyro *= gyro_sens;
+    read_word(OUT_Y_L_G, &gyro_data, fd);
+    y_gyro = gyro_data*gyro_sens;
 
-    INFO("x_gyro: %d | y_gyro: %d | z_gyro: %d", x_gyro, y_gyro, z_gyro);
+    read_word(OUT_Z_L_G, &gyro_data, fd);
+    z_gyro = gyro_data*gyro_sens;
+
+    INFO("x_gyro: %.2f | y_gyro: %.2f | z_gyro: %.2f", x_gyro, y_gyro, z_gyro);
 }
 
 void read_magnet(int fd)
 {
-    int16_t x_mag, y_mag, z_mag;
+    int8_t new_data;
+    int16_t mag_data;
 
-    read_word(OUT_X_L_M, &x_mag, fd);
-    read_word(OUT_Y_L_M, &y_mag, fd);
-    read_word(OUT_Z_L_M, &z_mag, fd);
+    read_byte(STATUS_REG_M, &new_data, fd);
 
-    x_mag *= mag_sens;
-    y_mag *= mag_sens;
-    z_mag *= mag_sens;
+    if (!(new_data & MAG_READY))
+        return;
 
-    INFO("x_mag: %d | y_mag: %d | z_mag: %d", x_mag, y_mag, z_mag);
+    read_word(OUT_X_L_M, &mag_data, fd);
+    x_mag = mag_data*mag_sens;
+
+    read_word(OUT_Y_L_M, &mag_data, fd);
+    y_mag = mag_data*mag_sens;
+
+    read_word(OUT_Z_L_M, &mag_data, fd);
+    z_mag = mag_data*mag_sens;
+
+    INFO("x_mag: %.2f | y_mag: %.2f | z_mag: %.2f", x_mag, y_mag, z_mag);
 }
 
 void check_whoami(int ag_fd, int m_fd)
@@ -189,7 +201,7 @@ void magnet_init(int fd)
 {
     uint8_t data = 0x00;
 
-    data |= 0x60;       // 01100000; XY high-power mode 
+    data |= 0x60;       // 01100000; XY ultra-high performance mode
     data |= 0x1C;       // 00011100; maximum sample rate
     write_byte(CTRL_REG1_M, data, fd);
 
@@ -200,7 +212,7 @@ void magnet_init(int fd)
     write_byte(CTRL_REG3_M, data, fd);
 
     data = 0x00;
-    data |= 0x0C;
+    data |= 0x0C;       // 00001100; Z ultra-high performance mode
     write_byte(CTRL_REG4_M, data, fd);
 
     data = 0x00;
