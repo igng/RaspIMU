@@ -16,6 +16,7 @@ float mag_sens = MAG_4GAUSS;
 float x_acc, y_acc, z_acc;
 float x_gyro, y_gyro, z_gyro;
 float x_mag, y_mag, z_mag;
+int acc_fd, gyro_fd, mag_fd;
 
 int open_file(const char *filename)
 {
@@ -89,6 +90,7 @@ void read_accels(int fd)
 {
     int8_t new_data;
     int16_t accel_data;
+    char line[16];
 
     read_byte(STATUS_REG_AG, &new_data, fd);
 
@@ -104,13 +106,16 @@ void read_accels(int fd)
     read_word(OUT_Z_L_A, &accel_data, fd);
     z_acc = accel_data*accel_sens;
 
-    INFO("x_acc: %.2f | y_acc: %.2f | z_acc: %.2f", x_acc, y_acc, z_acc);
+    //INFO("x_acc: %.2f | y_acc: %.2f | z_acc: %.2f", x_acc, y_acc, z_acc);
+    sprintf(line, "%.2f %.2f %.2f\n", x_acc, y_acc, z_acc);
+    write_to_file(acc_fd, line);
 }
 
 void read_gyro(int fd)
 {
     int8_t new_data;
     int16_t gyro_data;
+    char line[16];
 
     read_byte(STATUS_REG_AG, &new_data, fd);
 
@@ -126,13 +131,16 @@ void read_gyro(int fd)
     read_word(OUT_Z_L_G, &gyro_data, fd);
     z_gyro = gyro_data*gyro_sens;
 
-    INFO("x_gyro: %.2f | y_gyro: %.2f | z_gyro: %.2f", x_gyro, y_gyro, z_gyro);
+    //INFO("x_gyro: %.2f | y_gyro: %.2f | z_gyro: %.2f", x_gyro, y_gyro, z_gyro);
+    sprintf(line, "%.2f %.2f %.2f\n", x_gyro, y_gyro, z_gyro);
+    write_to_file(gyro_fd, line);
 }
 
 void read_magnet(int fd)
 {
     int8_t new_data;
     int16_t mag_data;
+    char line[16];
 
     read_byte(STATUS_REG_M, &new_data, fd);
 
@@ -148,7 +156,9 @@ void read_magnet(int fd)
     read_word(OUT_Z_L_M, &mag_data, fd);
     z_mag = mag_data*mag_sens;
 
-    INFO("x_mag: %.2f | y_mag: %.2f | z_mag: %.2f", x_mag, y_mag, z_mag);
+    //INFO("x_mag: %.2f | y_mag: %.2f | z_mag: %.2f", x_mag, y_mag, z_mag);
+    sprintf(line, "%.2f %.2f %.2f", a_mag, y_mag, z_mag);
+    write_to_file(mag_fd, line);
 }
 
 void check_whoami(int ag_fd, int m_fd)
@@ -173,6 +183,8 @@ void accel_init(int fd)
 
     data |= 0x38;       // 00111000; enables axis output
     write_byte(CTRL_REG5_XL, data, fd);
+
+    acc_fd = open_file("acc.txt");
 }
 
 void gyro_init(int fd)
@@ -195,6 +207,8 @@ void gyro_init(int fd)
 
     data = 0x00;
     write_byte(ORIENT_CFG_G, data, fd);
+
+    gyro_fd = open_file("gyro.txt");
 }
 
 void magnet_init(int fd)
@@ -217,4 +231,6 @@ void magnet_init(int fd)
 
     data = 0x00;
     write_byte(CTRL_REG5_M, data, fd);
+
+    mag_fd = open_file("mag.txt");
 }
