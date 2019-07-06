@@ -8,22 +8,14 @@
 
 #include "imu.h"
 #include "debug.h"
-#include "linalg.h"
-#include "control.h"
 
 int main(int argc, char *argv[])
 {
     if (argc != 1)
         usage(argv);
     
-//    int fd = MPU_setup();
-//    read_accels(fd);
-
-    control_init();
-    start_time();
-    ekf();
-    end_time();
-    control_destroy();
+    int fd = MPU_setup();
+    read_accels(fd);
 
     return EXIT_SUCCESS;
 }
