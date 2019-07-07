@@ -2,7 +2,8 @@
 #define IMU_H_
 
 #include <stdint.h>
-#include "debug.h"
+
+#define BLOCK_SIZE 6
 
 #define I2C_BUS "/dev/i2c-1"
 #define MPU6050_ADDRESS 0x68
@@ -13,7 +14,7 @@
 #define CONFIG              0x1A
 #define GYRO_CONFIG         0x1B
 #define ACCEL_CONFIG        0x1C
-#define FIFO_EN             0x23
+#define FIFO_EN_REG         0x23
 // [FOR NOW] skipping the I2C master/slave pins
 #define INT_PIN_CFG         0x37
 #define INT_ENABLE          0x38
@@ -26,12 +27,12 @@
 #define ACCEL_ZOUT_L        0x40
 #define TEMP_OUT_H          0x41
 #define TEMP_OUT_L          0x42
-#define GIRO_XOUT_H         0x43
-#define GIRO_XOUT_L         0x44
-#define GIRO_YOUT_H         0x45
-#define GIRO_YOUT_L         0x46
-#define GIRO_ZOUT_H         0x47
-#define GIRO_ZOUT_L         0x48
+#define GYRO_XOUT_H         0x43
+#define GYRO_XOUT_L         0x44
+#define GYRO_YOUT_H         0x45
+#define GYRO_YOUT_L         0x46
+#define GYRO_ZOUT_H         0x47
+#define GYRO_ZOUT_L         0x48
 #define SIGNAL_PATH_RESET   0x68
 #define USER_CTRL           0x6A
 #define PWR_MGMT_1          0x6B
@@ -81,12 +82,12 @@
 
 #define deg_temp(t) (t/340 + 36.53);
 
-uint16_t accel_sens[4] = {16384, 8192, 4096, 2048};
-float gyro_sens[4] = {131, 65.5, 32.8, 16.4};
+static const uint16_t ACCEL_SENS[4] = {16384, 8192, 4096, 2048};
+static const float GYRO_SENS[4] = {131, 65.5, 32.8, 16.4};
 
 typedef struct s_imu_struct
 {
-    int imu_fd;     // IMU file descriptor
+    int fd;         // IMU file descriptor
     float acc_sens; // accelerometer sensitivity
     float gyro_sens;// gyroscope sensitivity
     float x_acc;    // acceleration on x axis
@@ -97,25 +98,24 @@ typedef struct s_imu_struct
     float z_gyro;   // angular speed on z azis
 } t_imu_struct;
 
-extern struct t_imu_struct imu;
-
+void MPU6050_setup(void);
 int i2c_setup(int);
-void check_whoami(int, int);
+void check_whoami(int);
 
 void read_byte(uint8_t, int8_t *, int);
 void read_word(uint8_t, int16_t *, int);
 void write_byte(uint8_t, int8_t, int);
 void write_word(uint8_t, int16_t, int);
-void read_block(uint8_t, int16_t *, int);
+void read_block(ssize_t, uint8_t, int8_t *, int);
 
 void accel_init(int);
 void gyro_init(int);
 
-float get_x_acc(bool);
-float get_y_acc(bool);
-float get_z_acc(bool);
-float get_x_gyro(bool);
-float get_y_gyro(bool);
-float get_z_gyro(bool);
+float get_x_acc(void);
+float get_y_acc(void);
+float get_z_acc(void);
+float get_x_gyro(void);
+float get_y_gyro(void);
+float get_z_gyro(void);
 
 #endif
