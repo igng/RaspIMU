@@ -14,8 +14,7 @@ int main(int argc, char *argv[])
     if (argc != 1)
         usage(argv);
     
-    int fd = MPU_setup();
-    read_accels(fd);
+    MPU6050_setup();
 
     return EXIT_SUCCESS;
 }
